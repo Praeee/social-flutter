@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:social/signup.dart';
 import 'package:social/utils/variables.dart';
@@ -11,6 +12,23 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   bool isSigned = false;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.authStateChanges().listen((useraccount) { 
+      if (useraccount != null){
+        setState(() {
+          isSigned = true;
+        });
+      }else{
+        setState(() {
+          isSigned = false;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +43,17 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  var passwordcontroller = TextEditingController();
+  var emailcontroller = TextEditingController();
+
+//function login
+  login(){
+    FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailcontroller.text, 
+      password: passwordcontroller.text);
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,6 +88,7 @@ class _LoginState extends State<Login> {
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.only(left : 20, right: 20),
                 child: TextField(
+                  controller: emailcontroller,
                   keyboardType: TextInputType.emailAddress ,
                   decoration: InputDecoration(
                       filled: true,
@@ -77,7 +107,8 @@ class _LoginState extends State<Login> {
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.only(left : 20, right: 20),
                 child: TextField(
-                obscureText: true,
+                  controller: passwordcontroller,
+                  obscureText: true,
                   decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -91,19 +122,22 @@ class _LoginState extends State<Login> {
 
           //Button Login
               SizedBox(height: 20),
-              Container(
-                width: MediaQuery.of(context).size.width /2,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20)
-                   ),
-                  child: Center(
-                    child: Text('Login', 
-                    style: mystyle(20,Colors.black,FontWeight.w700),
-                    ) ,
+              InkWell(
+                onTap: () => login(),
+                child: Container(
+                  width: MediaQuery.of(context).size.width /2,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)
+                     ),
+                    child: Center(
+                      child: Text('Login', 
+                      style: mystyle(20,Colors.black,FontWeight.w700),
+                      ) ,
+                    ),
                   ),
-                ),
+              ),
 
           //Register
               SizedBox(height: 30),
