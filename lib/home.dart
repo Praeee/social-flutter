@@ -11,11 +11,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int page = 0;
-  List pageoptions = [
-    TweetsPage(),
-    SearchPage(),
-    ProfilePage()
-  ];
+  List pageoptions = [TweetsPage(), SearchPage(), ProfilePage()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,23 +22,38 @@ class _HomePageState extends State<HomePage> {
               page = index;
             });
           },
-
           selectedItemColor: Colors.lightBlue,
           unselectedItemColor: Colors.black,
           currentIndex: page,
-
           items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.home,size: 32,),
-                title: Text("Tweets",style: mystyle(20),)),
-            
-            BottomNavigationBarItem(icon: Icon(Icons.search,size: 32,),
-                title: Text("Search",style: mystyle(20),)),
-            
-            BottomNavigationBarItem(icon: Icon(Icons.person,size: 32,),
-                title: Text("Profile",style: mystyle(20),))
-          ]
-        ),
+                icon: Icon(
+                  Icons.home,
+                  size: 32,
+                ),
+                title: Text(
+                  "Tweets",
+                  style: mystyle(20),
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.search,
+                  size: 32,
+                ),
+                title: Text(
+                  "Search",
+                  style: mystyle(20),
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.person,
+                  size: 32,
+                ),
+                title: Text(
+                  "Profile",
+                  style: mystyle(20),
+                ))
+          ]),
     );
   }
 }
