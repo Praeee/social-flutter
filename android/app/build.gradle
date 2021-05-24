@@ -64,4 +64,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation platform('com.google.firebase:firebase-bom:27.1.0')
     implementation 'com.google.firebase:firebase-analytics'
+    // import 'package:cloud_firestore/cloud_firestore.dart';
+    // import 'package:firebase_storage/firebase_storage.dart';
+
 }

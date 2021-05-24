@@ -7,7 +7,9 @@ mystyle(double size, [Color color, FontWeight fw]) {
   return GoogleFonts.montserrat(fontSize: size, fontWeight: fw, color: color);
 }
 
-CollectionReference usercollection =
-    FirebaseFirestore.instance.collection('users');
-var exampleimage =
+CollectionReference usercollection = FirebaseFirestore.instance.collection('users');
+CollectionReference tweetcollection = FirebaseFirestore.instance.collection('tweets');
+Reference tweetpictures =
+    FirebaseStorage.instance.ref().child('tweetpictures');
+String exampleimage =
     'https://cambodiaict.net/wp-content/uploads/2019/12/computer-icons-user-profile-google-account-photos-icon-account.jpg';
