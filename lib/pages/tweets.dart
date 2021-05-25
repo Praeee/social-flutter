@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:social/addtweet.dart';
 import 'package:social/utils/variables.dart';
@@ -9,6 +10,20 @@ class TweetsPage extends StatefulWidget {
 }
 
 class _TweetsPageState extends State<TweetsPage> {
+  likepost(String documentid) async {
+    var firebaseuser = FirebaseAuth.instance.currentUser;
+    DocumentSnapshot doc = await tweetcollection.doc(documentid).get();
+
+    if (doc.data()['likes'].contains(firebaseuser.uid)) {
+      tweetcollection.doc(documentid).update({
+        'likes': FieldValue.arrayRemove([firebaseuser.uid])
+      });
+    } else {
+      tweetcollection.doc(documentid).update({
+        'likes': FieldValue.arrayUnion([firebaseuser.uid])
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,7 +123,9 @@ class _TweetsPageState extends State<TweetsPage> {
                                   ),
                                   Row(
                                     children: [
-                                      Icon(Icons.favorite_border),
+                                      InkWell(
+                                          onTap: ()=> likepost(tweetdoc['id']),
+                                          child: Icon(Icons.favorite_border)),
                                       SizedBox(
                                         width: 10.0,
                                       ),
