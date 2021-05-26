@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:social/addtweet.dart';
+import 'package:social/comment.dart';
 import 'package:social/utils/variables.dart';
 
 class TweetsPage extends StatefulWidget {
@@ -24,6 +25,7 @@ class _TweetsPageState extends State<TweetsPage> {
     });
   }
 
+//likepost
   likepost(String documentid) async {
     var firebaseuser = FirebaseAuth.instance.currentUser;
     DocumentSnapshot doc = await tweetcollection.doc(documentid).get();
@@ -39,6 +41,7 @@ class _TweetsPageState extends State<TweetsPage> {
     }
   }
 
+//sharepost
   sharepost(String documentid, String tweet) async {
     Share.text('Flitter', tweet, 'text/plain');
     DocumentSnapshot doc = await tweetcollection.doc(documentid).get();
@@ -134,12 +137,22 @@ class _TweetsPageState extends State<TweetsPage> {
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(Icons.comment),
+                                      InkWell(
+                                        onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CommentPage(tweetdoc
+                                                        .data()['id']))),
+                                        child: Icon(Icons.comment),
+                                      ),
                                       SizedBox(
                                         width: 10.0,
                                       ),
                                       Text(
-                                        tweetdoc['commentcount'].toString(),
+                                        tweetdoc
+                                            .data()['commentcount']
+                                            .toString(),
                                         style: mystyle(18),
                                       ),
                                     ],
@@ -171,22 +184,22 @@ class _TweetsPageState extends State<TweetsPage> {
                                     ],
                                   ),
                                   Row(
-                                  children: [
-                                    InkWell(
-                                      onTap: () => sharepost(
-                                          tweetdoc.data()['id'],
-                                          tweetdoc.data()['tweet']),
-                                      child: Icon(Icons.share),
-                                    ),
-                                    SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    Text(
-                                      tweetdoc.data()['shares'].toString(),
-                                      style: mystyle(18),
-                                    ),
-                                  ],
-                                ),
+                                    children: [
+                                      InkWell(
+                                        onTap: () => sharepost(
+                                            tweetdoc.data()['id'],
+                                            tweetdoc.data()['tweet']),
+                                        child: Icon(Icons.share),
+                                      ),
+                                      SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      Text(
+                                        tweetdoc.data()['shares'].toString(),
+                                        style: mystyle(18),
+                                      ),
+                                    ],
+                                  ),
                                 ])
                           ],
                         ),
