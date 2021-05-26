@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:social/addtweet.dart';
 import 'package:social/utils/variables.dart';
@@ -22,7 +23,7 @@ class _TweetsPageState extends State<TweetsPage> {
       uid = firebaseuser.uid;
     });
   }
-  
+
   likepost(String documentid) async {
     var firebaseuser = FirebaseAuth.instance.currentUser;
     DocumentSnapshot doc = await tweetcollection.doc(documentid).get();
@@ -37,6 +38,15 @@ class _TweetsPageState extends State<TweetsPage> {
       });
     }
   }
+
+  sharepost(String documentid, String tweet) async {
+    Share.text('Flitter', tweet, 'text/plain');
+    DocumentSnapshot doc = await tweetcollection.doc(documentid).get();
+    tweetcollection
+        .doc(documentid)
+        .update({'shares': doc.data()['shares'] + 1});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,42 +145,48 @@ class _TweetsPageState extends State<TweetsPage> {
                                     ],
                                   ),
                                   Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () =>
+                                            likepost(tweetdoc.data()['id']),
+                                        child: tweetdoc
+                                                .data()['likes']
+                                                .contains(uid)
+                                            ? Icon(
+                                                Icons.favorite,
+                                                color: Colors.red,
+                                              )
+                                            : Icon(Icons.favorite_border),
+                                      ),
+                                      SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      Text(
+                                        tweetdoc
+                                            .data()['likes']
+                                            .length
+                                            .toString(),
+                                        style: mystyle(18),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
                                   children: [
                                     InkWell(
-                                      onTap: () =>
-                                          likepost(tweetdoc.data()['id']),
-                                      child:
-                                          tweetdoc.data()['likes'].contains(uid)
-                                              ? Icon(
-                                                  Icons.favorite,
-                                                  color: Colors.red,
-                                                )
-                                              : Icon(Icons.favorite_border),
+                                      onTap: () => sharepost(
+                                          tweetdoc.data()['id'],
+                                          tweetdoc.data()['tweet']),
+                                      child: Icon(Icons.share),
                                     ),
                                     SizedBox(
                                       width: 10.0,
                                     ),
                                     Text(
-                                      tweetdoc
-                                          .data()['likes']
-                                          .length
-                                          .toString(),
+                                      tweetdoc.data()['shares'].toString(),
                                       style: mystyle(18),
                                     ),
                                   ],
                                 ),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.share),
-                                      SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      Text(
-                                        tweetdoc['shares'].toString(),
-                                        style: mystyle(18),
-                                      ),
-                                    ],
-                                  ),
                                 ])
                           ],
                         ),
