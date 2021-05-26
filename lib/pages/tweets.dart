@@ -10,6 +10,19 @@ class TweetsPage extends StatefulWidget {
 }
 
 class _TweetsPageState extends State<TweetsPage> {
+  String uid;
+  initState() {
+    super.initState();
+    getcurrentuseruid();
+  }
+
+  getcurrentuseruid() async {
+    var firebaseuser = FirebaseAuth.instance.currentUser;
+    setState(() {
+      uid = firebaseuser.uid;
+    });
+  }
+  
   likepost(String documentid) async {
     var firebaseuser = FirebaseAuth.instance.currentUser;
     DocumentSnapshot doc = await tweetcollection.doc(documentid).get();
@@ -122,19 +135,30 @@ class _TweetsPageState extends State<TweetsPage> {
                                     ],
                                   ),
                                   Row(
-                                    children: [
-                                      InkWell(
-                                          onTap: ()=> likepost(tweetdoc['id']),
-                                          child: Icon(Icons.favorite_border)),
-                                      SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      Text(
-                                        tweetdoc['likes'].length.toString(),
-                                        style: mystyle(18),
-                                      ),
-                                    ],
-                                  ),
+                                  children: [
+                                    InkWell(
+                                      onTap: () =>
+                                          likepost(tweetdoc.data()['id']),
+                                      child:
+                                          tweetdoc.data()['likes'].contains(uid)
+                                              ? Icon(
+                                                  Icons.favorite,
+                                                  color: Colors.red,
+                                                )
+                                              : Icon(Icons.favorite_border),
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Text(
+                                      tweetdoc
+                                          .data()['likes']
+                                          .length
+                                          .toString(),
+                                      style: mystyle(18),
+                                    ),
+                                  ],
+                                ),
                                   Row(
                                     children: [
                                       Icon(Icons.share),
