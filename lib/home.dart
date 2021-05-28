@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.home,
-                  size: 32,
+                  size: 30,
                 ),
                 title: Text(
                   "Tweets",
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.search,
-                  size: 32,
+                  size: 30,
                 ),
                 title: Text(
                   "Search",
@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.person,
-                  size: 32,
+                  size: 30,
                 ),
                 title: Text(
                   "Profile",

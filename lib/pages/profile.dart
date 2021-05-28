@@ -14,7 +14,10 @@ class _ProfilePageState extends State<ProfilePage> {
   String uid;
   Stream userstream;
   String username = '';
+  int following;
+  int followers;
   String profilepic;
+  bool isfollowing;
   bool dataisthere = false;
   initState() {
     super.initState();
@@ -26,34 +29,34 @@ class _ProfilePageState extends State<ProfilePage> {
   getcurrentuserinfo() async {
     var firebaseuser = FirebaseAuth.instance.currentUser;
     DocumentSnapshot userdoc = await usercollection.doc(firebaseuser.uid).get();
-    // var followersdocuments = await usercollection
-    //     .doc(firebaseuser.uid)
-    //     .collection('followers')
-    //     .get();
-    // var followngdocuments = await usercollection
-    //     .doc(firebaseuser.uid)
-    //     .collection('following')
-    //     .get();
-    // usercollection
-    //     .doc(firebaseuser.uid)
-    //     .collection('followers')
-    //     .doc(firebaseuser.uid)
-    //     .get()
-    //     .then((doc) {
-    //   if (doc.exists) {
-    //     setState(() {
-    //       isfollowing = true;
-    //     });
-    //   } else {
-    //     setState(() {
-    //       isfollowing = false;
-    //     });
-    //   }
-    // });
+    var followersdocuments = await usercollection
+        .doc(firebaseuser.uid)
+        .collection('followers')
+        .get();
+    var followngdocuments = await usercollection
+        .doc(firebaseuser.uid)
+        .collection('following')
+        .get();
+    usercollection
+        .doc(firebaseuser.uid)
+        .collection('followers')
+        .doc(firebaseuser.uid)
+        .get()
+        .then((doc) {
+      if (doc.exists) {
+        setState(() {
+          isfollowing = true;
+        });
+      } else {
+        setState(() {
+          isfollowing = false;
+        });
+      }
+    });
     setState(() {
       username = userdoc.data()['username'];
-      // following = followngdocuments.docs.length;
-      // followers = followersdocuments.docs.length;
+      following = followngdocuments.docs.length;
+      followers = followersdocuments.docs.length;
       profilepic = userdoc.data()['profilepic'];
       dataisthere = true;
     });
@@ -147,7 +150,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: mystyle(20, Colors.black, FontWeight.w600),
                       ),
                       Text(
-                        "Followes",
+                        "Followers",
                         style: mystyle(20, Colors.black, FontWeight.w600),
                       )
                     ],
@@ -159,11 +162,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        "12",
+                        following.toString(),
                         style: mystyle(20, Colors.black, FontWeight.w600),
                       ),
                       Text(
-                        "20",
+                        followers.toString(),
                         style: mystyle(20, Colors.black, FontWeight.w600),
                       )
                     ],
