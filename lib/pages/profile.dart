@@ -3,6 +3,7 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:social/comment.dart';
+import 'package:social/pages/editprofile.dart';
 import 'package:social/utils/variables.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -175,18 +176,25 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 20,
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditProfile())),
                     child: Container(
                       width: MediaQuery.of(context).size.width / 2,
                       height: 50,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           gradient: LinearGradient(
-                              colors: [Colors.lightBlue, Colors.blue])),
-                      child: Center(
-                        child: Text(
-                          "Edit Profile",
-                          style: mystyle(20, Colors.white, FontWeight.w700),
+                              colors: [Colors.white, Colors.white])),
+                      child: Container(
+                          child: Center(
+                          child: Text(
+                            "SignOut",
+                            style: mystyle(20, Colors.red, FontWeight.w500),
+                          
+                          ),
                         ),
                       ),
                     ),
@@ -216,7 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   leading: CircleAvatar(
                                     backgroundColor: Colors.white,
                                     backgroundImage:
-                                        NetworkImage(tweetdoc['profilepic']),
+                                        NetworkImage(tweetdoc.data()['profilepic']),
                                   ),
                                   title: Text(
                                     tweetdoc['username'],

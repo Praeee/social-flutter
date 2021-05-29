@@ -84,7 +84,7 @@ class _TweetsPageState extends State<TweetsPage> {
             stream: tweetcollection.snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               }
               return ListView.builder(
                   itemCount: snapshot.data.docs.length,
